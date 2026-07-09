@@ -1,0 +1,55 @@
+<div class="sidebar">
+
+    <div class="logo">
+        <h4>GeoRisk Monitor</h4>
+        <small>Intelijen Global</small>
+    </div>
+
+    <div class="menu">
+
+        <a href="{{ route('dashboard') }}">
+            <i class="fa-solid fa-table-cells-large me-2"></i>
+            Dashboard
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-bookmark me-2"></i>
+            Daftar Pantauan
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-chart-line me-2"></i>
+            Analisis Tren
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-earth-americas me-2"></i>
+            Berita Geopolitik
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-user me-2"></i>
+            Profil
+        </a>
+
+    </div>
+
+    <div class="bottom-menu">
+
+        <button class="btn-report">
+            <i class="fa-solid fa-circle-plus"></i>
+            Buat Laporan Baru
+        </button>
+
+        <a href="#">
+            <i class="fa-regular fa-circle-question me-2"></i>
+            Bantuan
+        </a>
+        <a href="#">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>
+            Keluar
+        </a>
+
+    </div>
+
+</div>
