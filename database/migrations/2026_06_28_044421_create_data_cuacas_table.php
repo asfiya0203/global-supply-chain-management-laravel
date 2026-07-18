@@ -19,12 +19,12 @@ return new class extends Migration
             ->cascadeOnDelete();
 
             $table->decimal('suhu', 5, 2);
-            $table->integer('kelembapan');
+            $table->decimal('curah_hujan', 8, 2);
             $table->decimal('kecepatan_angin', 5, 2);
             $table->string('kondisi_cuaca');
             $table->enum('tingkat_risiko', ['rendah', 'sedang', 'tinggi']);
             $table->string('sumber_api');
-            $table->dateTime('waktu_data');
+            $table->date('tanggal_data');
             $table->timestamps();
         });
     }

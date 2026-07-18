@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DataCuaca extends Model
+class IndikatorEkonomi extends Model
 {
-    protected $table = 'data_cuaca';
+    protected $table = 'indikator_ekonomi';
 
     protected $fillable = [
         'negara_id',
-        'suhu',
-        'curah_hujan',
-        'kecepatan_angin',
-        'kondisi_cuaca',
-        'tingkat_risiko',
+        'tahun',
+        'gdp',
+        'inflasi',
+        'populasi',
+        'ekspor',
+        'impor',
         'sumber_api',
-        'tanggal_data',
     ];
 
     public function negara()

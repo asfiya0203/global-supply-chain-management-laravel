@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DataCuaca extends Model
+class KursMataUang extends Model
 {
-    protected $table = 'data_cuaca';
+    protected $table = 'kurs_mata_uang';
 
     protected $fillable = [
         'negara_id',
-        'suhu',
-        'curah_hujan',
-        'kecepatan_angin',
-        'kondisi_cuaca',
+        'kode_mata_uang',
+        'kurs_ke_usd',
+        'perubahan_persen',
         'tingkat_risiko',
+        'tanggal',
         'sumber_api',
-        'tanggal_data',
     ];
 
     public function negara()

@@ -58,9 +58,8 @@
             <div id="konten-negara">
 
                 {{-- Kartu identitas negara --}}
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <i class="fa-solid fa-flag"></i>
+                <div class="card shadow">
+                    <div class="card-header bg-header-custom">
                         <span id="detail-nama"></span>
                     </div>
                     <div class="card-body">
@@ -89,6 +88,217 @@
                             </div>
                         </div>
                     </div>
+                </div><br>
+
+                <div class="row">
+
+                    {{-- Kartu Indikator Ekonomi --}}
+                    <div class="col-lg-6 mb-3">
+
+                        <div class="card shadow border-0 h-100">
+
+                            <div class="card-header bg-header-custom d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i class="fa-solid fa-chart-line me-2"></i>
+                                    <strong>Indikator Ekonomi</strong>
+                                </span>
+
+                                <small id="ekonomi-tahun" class="fw-normal"></small>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row py-2">
+                                    <div class="col-md-4 fw-semibold">
+                                        <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+                                        GDP
+                                    </div>
+
+                                    <div class="col-md-8 text-end fw-bold" id="detail-gdp">
+                                        -
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row py-2">
+                                    <div class="col-md-4 fw-semibold">
+                                        <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+                                        Inflasi
+                                    </div>
+
+                                    <div class="col-md-8 text-end fw-bold" id="detail-inflasi">
+                                        -
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row py-2">
+                                    <div class="col-md-4 fw-semibold">
+                                        <i class="fa-solid fa-users me-2"></i>
+                                        Populasi
+                                    </div>
+
+                                    <div class="col-md-8 text-end fw-bold" id="detail-populasi">
+                                        -
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row py-2">
+                                    <div class="col-md-4 fw-semibold">
+                                        <i class="fa-solid fa-box text-info me-2"></i>
+                                        Ekspor
+                                    </div>
+
+                                    <div class="col-md-8 text-end fw-bold" id="detail-ekspor">
+                                        -
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row py-2">
+                                    <div class="col-md-4 fw-semibold">
+                                        <i class="fa-solid fa-ship text-danger me-2"></i>
+                                        Impor
+                                    </div>
+
+                                    <div class="col-md-8 text-end fw-bold" id="detail-impor">
+                                        -
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {{-- Kartu Kurs Mata Uang --}}
+                    <div class="col-lg-6 mb-3">
+
+                        <div class="card shadow border-0 h-100">
+
+                            <div class="card-header bg-header-custom d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i class="fa-solid fa-coins me-2"></i>
+                                    <strong>Kurs Mata Uang</strong>
+                                </span>
+
+                                <small id="kurs-tanggal" class="fw-normal"></small>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div id="loading-kurs" class="text-center py-3" style="display:none;">
+                                    <div class="spinner-border spinner-border-sm text-primary"></div>
+                                    <span class="ms-2 text-muted">Memuat data kurs...</span>
+                                </div>
+
+                                <div id="konten-kurs">
+
+                                    <div class="row py-2">
+                                        <div class="col-md-4 fw-semibold">
+                                            <i class="fa-solid fa-tag me-2"></i>
+                                            Kode Mata Uang
+                                        </div>
+
+                                        <div class="col-md-8 text-end fw-bold" id="detail-kode-mata-uang">
+                                            -
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row py-2">
+                                        <div class="col-md-4 fw-semibold">
+                                            <i class="fa-solid fa-dollar-sign me-2"></i>
+                                            1 USD =
+                                        </div>
+
+                                        <div class="col-md-8 text-end fw-bold" id="detail-kurs">
+                                            -
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row py-2">
+                                        <div class="col-md-4 fw-semibold">
+                                            <i class="fa-solid fa-arrow-trend-up me-2"></i>
+                                            Perubahan
+                                        </div>
+
+                                        <div class="col-md-8 text-end fw-bold" id="detail-perubahan-kurs">
+                                            -
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row py-2">
+                                        <div class="col-md-4 fw-semibold">
+                                            <i class="fa-solid fa-chart-line me-2"></i>
+                                            Tren
+                                        </div>
+
+                                        <div class="col-md-8 text-end fw-bold" id="detail-tren-kurs">
+                                            -
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row py-2">
+                                        <div class="col-md-4 fw-semibold">
+                                            <i class="fa-solid fa-shield-halved me-2"></i>
+                                            Tingkat Risiko
+                                        </div>
+
+                                        <div class="col-md-8 text-end">
+                                            <span class="badge" id="detail-risiko-kurs">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{--KARTU CUACA DI SINI--}}
+                <div class="card shadow mb-3">
+                    <div class="card-header bg-header-custom">
+                        <i class="fa-solid fa-cloud-sun"></i> Cuaca Saat Ini
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-borderless mb-0">
+                            <tr>
+                                <td class="text-muted" width="160">Suhu</td>
+                                <td><strong id="detail-suhu">-</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Curah Hujan</td>
+                                <td><strong id="detail-hujan">-</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Kecepatan Angin</td>
+                                <td><strong id="detail-angin">-</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Kondisi</td>
+                                <td><strong id="detail-kondisi">-</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Tingkat Risiko Cuaca</td>
+                                <td>
+                                    <span class="badge" id="detail-risiko-cuaca">-</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -97,7 +307,7 @@
 
         {{-- Card Peta --}}
         <div class="card shadow">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-header-custom">
                 <i class="fa-solid fa-earth-americas"></i>
                 Peta Monitoring Negara
             </div>
@@ -125,12 +335,18 @@
 <script>
     const APP_URL = {
         koordinat : "{{ route('peta.koordinat') }}",
-        detail    : "{{ url('/api/negara') }}"
+        detail    : "{{ url('/api/negara') }}",
+        cuaca     : "{{ url('/api/cuaca') }}",
+        ekonomi   : "{{ url('/api/ekonomi') }}",
+        kurs      : "{{ url('/api/kurs') }}",
     };
 </script>
 
 {{-- Baru load file JS --}}
 <script src="{{ asset('js/dashboard.js') }}"></script>
+<script src="{{ asset('js/cuaca.js') }}"></script>
+<script src="{{ asset('js/ekonomi.js') }}"></script>
+<script src="{{ asset('js/kurs.js') }}"></script>
 
 </body>
 </html>

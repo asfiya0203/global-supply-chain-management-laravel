@@ -17,9 +17,7 @@ $(document).ready(function () {
     fetch(APP_URL.koordinat)
         .then(response => response.json())
         .then(data => {
-
             data.forEach(negara => {
-
                 const marker = L.marker([
                     negara.latitude,
                     negara.longitude
@@ -31,34 +29,23 @@ $(document).ready(function () {
                 `);
 
                 markers[negara.id] = marker;
-
                 marker.on('click', function () {
-
                     $('#negara')
-                        .val(String(negara.id))
-                        .trigger('change');
-
+                    .val(String(negara.id))
+                    .trigger('change');
                 });
-
             });
-
         })
-        .catch(error => {
-            console.error(error);
-        });
+        .catch(error => {console.error(error);});
 
     $('#negara').on('change', function () {
-
         const id = $(this).val();
         if (!id) {
-
             map.flyTo([20, 0], 2, {
                 animate: true,
                 duration: 1.5
             });
-
             $('#detail-negara').hide();
-
             return;
         }
 
@@ -69,30 +56,19 @@ $(document).ready(function () {
         fetch(`${APP_URL.detail}/${id}`)
             .then(response => response.json())
             .then(negara => {
-
                 $('#detail-nama').text(negara.nama_negara);
-
-                $('#detail-bendera').attr(
-                    'src',
-                    negara.bendera
-                );
-
-                $('#detail-ibukota').text(
-                    negara.ibu_kota
-                );
-
-                $('#detail-wilayah').text(
-                    negara.wilayah
-                );
-
-                $('#detail-iso').text(
-                    negara.kode_iso2 +
-                    " / " +
-                    negara.kode_iso3
-                );
+                $('#detail-bendera').attr('src',negara.bendera);
+                $('#detail-ibukota').text(negara.ibu_kota);
+                $('#detail-wilayah').text(negara.wilayah);
+                $('#detail-iso').text(negara.kode_iso2 + " / " +negara.kode_iso3);
 
                 $('#loading-negara').hide();
                 $('#konten-negara').show();
+
+                loadCuaca(negara.id);
+                muatEkonomi(id);
+                muatKurs(id); 
+                
                 map.flyTo(
                     [
                         negara.latitude,
@@ -105,24 +81,14 @@ $(document).ready(function () {
                     }
                 );
                 if (markers[negara.id]) {
-
                     setTimeout(function () {
-
                         markers[negara.id].openPopup();
-
                     }, 1500);
-
                 }
-
             })
             .catch(error => {
-
                 console.error(error);
-
                 $('#loading-negara').hide();
-
             });
-
     });
-
 });

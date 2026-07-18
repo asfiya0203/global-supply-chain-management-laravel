@@ -12,6 +12,7 @@ class Negara extends Model
         'nama_negara',
         'kode_iso2',
         'kode_iso3',
+        'kode_mata_uang',
         'ibu_kota',
         'wilayah',
         'latitude',
@@ -47,6 +48,16 @@ class Negara extends Model
     public function dataBerita()
     {
         return $this->hasMany(DataBerita::class);
+    }
+
+    public function indikatorEkonomi()
+    {
+        return $this->hasMany(IndikatorEkonomi::class);
+    }
+
+    public function kursMataUang()
+    {
+        return $this->hasMany(KursMataUang::class);
     }
 
     public function skorRisikoHarian()
