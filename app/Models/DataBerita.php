@@ -11,14 +11,19 @@ class DataBerita extends Model
     protected $fillable = [
         'negara_id',
         'judul',
-        'isi',
-        'url_sumber',
+        'deskripsi',
+        'url',
+        'sumber',
+        'kategori',
         'skor_positif',
         'skor_negatif',
         'sentimen',
-        'tanggal_duplikasi',
-        'sumber_api',
-        'waktu_data',
+        'skor_risiko_berita',
+        'tanggal_publikasi',
+    ];
+
+    protected $casts = [
+        'tanggal_publikasi' => 'datetime',
     ];
 
     public function negara()

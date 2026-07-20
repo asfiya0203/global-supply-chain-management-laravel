@@ -5,75 +5,61 @@ body{
 }
 
 .sidebar{
-
     width:250px;
-    min-height:100vh;
+    height:100vh;  
+    position: fixed;  
+    top:0;
+    left:0;
     background:#311046;
     color:white;
-
     display:flex;
     flex-direction:column;
-
+    overflow-y:auto; 
 }
 
 .logo{
-
     padding:25px;
 }
 
 .logo h4{
-
     margin:0;
     font-weight:bold;
 }
 
 .logo p{
-
     font-size:13px;
     color:#ddd;
 }
 
 .menu{
-
     padding:10px;
 }
 
 .menu a{
-
     display:block;
-
     color:white;
     text-decoration:none;
-
     padding:12px 15px;
-
     border-radius:8px;
-
     margin-bottom:8px;
-
     transition:.3s;
 }
 
 .menu a:hover{
-
     background:#ff9800;
     color:white;
 }
 
 .menu .active{
-
     background:#ff9800;
 }
 
 .bottom-menu{
-
     margin-top:auto;
-
     padding:15px;
 }
 
 .btn-report{
-
     width:100%;
     background:#ff9800;
     color:white;
@@ -84,25 +70,20 @@ body{
 }
 
 .content{
-
     flex:1;
-
     background:white;
-
     margin:15px;
-
     border-radius:15px;
-
     padding:25px;
-
     overflow:auto;
 }
 
-
 .content{
+    margin-left:250px; /* sama dengan lebar sidebar */
     flex:1;
     padding:30px;
     background:#f5f6fa;
+    min-height:100vh;
 }
 
 #map {
@@ -129,63 +110,38 @@ body{
     display:flex;
     align-items:center;
     gap:18px;
-
     padding:18px 22px;
-
     background:#fff;
-
     border-radius:15px;
-
     box-shadow:0 3px 10px rgba(0,0,0,.08);
-
     transition:.25s;
 }
 
 .economy-card:hover{
-
     transform:translateY(-3px);
-
     box-shadow:0 8px 20px rgba(0,0,0,.12);
-
 }
 
 .economy-icon{
-
     width:58px;
     height:58px;
-
     border-radius:50%;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     color:#fff;
-
     font-size:24px;
-
     flex-shrink:0;
-
 }
 
 .economy-title{
-
     color:#6c757d;
-
     font-size:14px;
-
     margin-bottom:4px;
-
 }
 
 .economy-value{
-
     font-size:28px;
-
     font-weight:700;
-
     color:#212529;
-
 }

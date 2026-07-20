@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('sumber_api');
             $table->date('tanggal_data');
             $table->timestamps();
+
+            $table->unique(['negara_id', 'tanggal_data']);
         });
     }
 

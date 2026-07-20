@@ -11,11 +11,14 @@ class DataPelabuhan extends Model
     protected $fillable = [
         'negara_id',
         'nama_pelabuhan',
-        'status',
-        'tingkat_kepadatan',
-        'estimasi_keterlambatan',
-        'sumber_api',
-        'waktu_data',
+        'nama_alternatif',
+        'un_locode',
+        'wilayah',
+        'ukuran_pelabuhan',
+        'tipe_pelabuhan',
+        'penggunaan_pelabuhan',
+        'latitude',
+        'longitude',
     ];
 
     public function negara()

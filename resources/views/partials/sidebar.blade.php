@@ -12,9 +12,9 @@
             Dashboard
         </a>
 
-        <a href="#">
+        <a href="{{ route('halaman.pelabuhan') }}">
             <i class="fa-solid fa-bookmark me-2"></i>
-            Daftar Pantauan
+            Data pelabuhan
         </a>
 
         <a href="#">
@@ -22,7 +22,7 @@
             Analisis Tren
         </a>
 
-        <a href="#">
+        <a href="{{ route('halaman.berita') }}">
             <i class="fa-solid fa-earth-americas me-2"></i>
             Berita Geopolitik
         </a>

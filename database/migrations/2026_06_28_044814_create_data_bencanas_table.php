@@ -15,16 +15,29 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('negara_id')
-            ->constrained('negara')
-            ->cascadeOnDelete();
+                ->constrained('negara')
+                ->cascadeOnDelete();
 
-            $table->string('jenis_bencana');
-            $table->string('tingkat_keparahan');
-            $table->string('lokasi');
-            $table->text('deskripsi');
-            $table->string('sumber_api');
-            $table->dateTime('waktu_data');
+            $table->string('judul', 500);
+            $table->string('url', 750)->unique();
+            $table->string('sumber');
+            $table->enum('jenis_bencana', [
+                'gempa',
+                'banjir',
+                'topan',
+                'longsor',
+                'kebakaran',
+                'bencana_nasional'
+            ]);
+
+            $table->integer('skor_negatif')->default(0);
+            $table->integer('skor_risiko_bencana')->default(0);
+
+            $table->dateTime('tanggal_publikasi')->nullable();
+
             $table->timestamps();
+
+            $table->index('negara_id');
         });
     }
 

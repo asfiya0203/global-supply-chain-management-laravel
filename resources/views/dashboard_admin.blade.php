@@ -64,108 +64,205 @@
         </button>
     </form><br>
 
-    {{-- Notifikasi hasil refresh kurs --}}
-    @if(session('success_kurs'))
+    {{-- Notifikasi hasil update --}}
+@if(session('update_selesai'))
+<div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
 
-    <div class="alert alert-success">
-        <h5>{{ session('success_kurs') }}</h5>
-        <p>
-            Negara berhasil diproses :
-            <strong>{{ session('negara_berhasil_kurs') }}</strong><br>
+    <h5 class="fw-bold mb-3">
+        <i class="fa-solid fa-circle-check me-2"></i>
+        Update Harian Selesai
+    </h5>
 
-            Total record diperbarui :
-            <strong>{{ session('record_berhasil_kurs') }}</strong><br>
+    <div class="row g-3">
 
-            Negara gagal :
-            <strong>{{ session('negara_gagal_jumlah_kurs') }}</strong>
+        {{-- Hasil cuaca --}}
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded border">
+                <div class="fw-semibold mb-2">
+                    <i class="fa-solid fa-cloud-sun me-1 text-info"></i>
+                    Data Cuaca
+                </div>
+                <table class="table table-sm table-borderless mb-0">
+                    <tr>
+                        <td class="text-muted">Berhasil</td>
+                        <td>
+                            <strong class="text-success">
+                                {{ session('cuaca_berhasil') }} record
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Gagal</td>
+                        <td>
+                            <strong class="text-danger">
+                                {{ session('cuaca_gagal') }} negara
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Waktu</td>
+                        <td>{{ session('cuaca_diperbarui_pada') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {{-- Hasil kurs --}}
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded border">
+                <div class="fw-semibold mb-2">
+                    <i class="fa-solid fa-coins me-1 text-warning"></i>
+                    Data Kurs Mata Uang
+                </div>
+                <table class="table table-sm table-borderless mb-0">
+                    <tr>
+                        <td class="text-muted">Berhasil</td>
+                        <td>
+                            <strong class="text-success">
+                                {{ session('kurs_berhasil') }} negara
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Gagal</td>
+                        <td>
+                            <strong class="text-danger">
+                                {{ session('kurs_gagal') }} negara
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Waktu</td>
+                        <td>{{ session('kurs_diperbarui_pada') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+{{-- Kartu tombol update harian --}}
+<div class="card shadow border-0 mb-4">
+    <div class="card-header bg-header-custom">
+        <i class="fa-solid fa-rotate me-2"></i>
+        <strong>Update Data Harian</strong>
+    </div>
+    <div class="card-body">
+
+        <p class="text-muted mb-1">
+            Perbarui data <strong>cuaca</strong> dan <strong>kurs mata uang</strong>
+            untuk semua negara hari ini sekaligus.
         </p>
 
-        @if(count(session('negara_gagal_kurs', [])) > 0)
-        <hr>
-        <strong>Daftar negara yang gagal:</strong>
-        <ul>
-            @foreach(session('negara_gagal_kurs') as $item)
-                <li>{{ $item['negara'] }} - {{ $item['pesan'] }}</li>
-            @endforeach
-        </ul>
-        @endif
+        <p class="text-muted small mb-3">
+            <i class="fa-solid fa-clock me-1"></i>
+            Proses ini memerlukan beberapa menit tergantung jumlah negara.
+        </p>
 
-    </div>
+        <form action="{{ route('admin.update.harian') }}"
+              method="POST"
+              id="form-update-harian"
+              onsubmit="return konfirmasiUpdate()">
+            @csrf
 
-    @endif
+            <button type="submit"
+                    class="btn btn-primary"
+                    id="btn-update-harian">
+                <i class="fa-solid fa-rotate me-2"></i>
+                Perbarui Cuaca &amp; Kurs Sekarang
+            </button>
 
-    {{-- Form refresh kurs --}}
-    <form action="{{ route('admin.kurs.update') }}" method="POST"
-          onsubmit="return confirm('Perbarui data kurs 14 hari terakhir? Proses ini mungkin memerlukan beberapa menit.')">
-        @csrf
+        </form>
 
-        <button type="submit" class="btn btn-warning">
-            <i class="fa-solid fa-arrows-rotate me-2"></i>
-            Perbarui Data Kurs
-        </button>
-    </form>
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-
-            <div class="d-flex justify-content-between align-items-center">
-
-                <div>
-                    <h5 class="mb-1">
-                        <i class="fas fa-coins text-warning me-2"></i>
-                        Update Kurs Mata Uang
-                    </h5>
-                    <small class="text-muted">
-                        Mengambil kurs terbaru dari Open ER API dan memperbarui database.
-                    </small>
-                </div>
-
-                <form action="{{ route('admin.kurs.update') }}" method="POST">
-                    @csrf
-
-                    <button
-                        type="submit"
-                        class="btn btn-success"
-                        onclick="return confirm('Yakin ingin memperbarui data kurs hari ini?')">
-
-                        <i class="fas fa-sync-alt me-2"></i>
-                        Update Kurs Hari Ini
-
-                    </button>
-                </form>
-
+        {{-- Loading setelah tombol diklik --}}
+        <div id="loading-update-harian" class="mt-3" style="display:none;">
+            <div class="d-flex align-items-center gap-2">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+                <span class="text-muted">
+                    Sedang memperbarui data cuaca dan kurs...
+                    Jangan tutup halaman ini.
+                </span>
             </div>
-
-            @if(session('success'))
-                <div class="alert alert-success mt-4 mb-0">
-                    <strong>{{ session('success') }}</strong><br>
-
-                    Negara berhasil :
-                    <strong>{{ session('negara_berhasil') }}</strong><br>
-
-                    Record berhasil :
-                    <strong>{{ session('record_berhasil') }}</strong><br>
-
-                    Negara gagal :
-                    <strong>{{ session('negara_gagal_jumlah') }}</strong>
-
-                    @if(session('negara_gagal_jumlah') > 0)
-                        <hr>
-
-                        <strong>Daftar Negara Gagal :</strong>
-
-                        <ul class="mb-0 mt-2">
-                            @foreach(session('negara_gagal') as $item)
-                                <li>
-                                    {{ $item['negara'] }}
-                                    — {{ $item['pesan'] }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            @endif
-
         </div>
+
     </div>
+</div><br>
+
+<!-- Tombol Update Berita -->
+<form action="{{ route('admin.berita.update') }}" method="POST" class="d-inline">
+    @csrf
+    <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-newspaper me-1"></i>
+        Update Berita Hari Ini
+    </button>
+</form>
+
+<!-- Pesan berhasil -->
+@if(session('success'))
+    <div class="alert alert-success mt-3">
+        <h6 class="mb-2">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            {{ session('success') }}
+        </h6>
+
+        <table class="table table-sm table-borderless mb-0">
+            <tr>
+                <td width="180">Berita berhasil</td>
+                <td>: {{ session('berita_berhasil') }} berita</td>
+            </tr>
+            <tr>
+                <td>Berita gagal</td>
+                <td>: {{ session('berita_gagal') }} berita</td>
+            </tr>
+            <tr>
+                <td>Waktu update</td>
+                <td>: {{ now()->format('d M Y H:i:s') }}</td>
+            </tr>
+        </table>
+    </div>
+@endif
+
+<!-- Pesan gagal -->
+@if(session('error'))
+    <div class="alert alert-danger mt-3">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+        {{ session('error') }}
+    </div>
+@endif
+
+
+<form action="{{ route('admin.bencana.update') }}" method="POST" class="d-inline">
+    @csrf
+    <button type="submit" class="btn btn-danger">
+        <i class="fa-solid fa-triangle-exclamation me-1"></i>
+        Update Bencana Hari Ini
+    </button>
+</form>
+{{-- Script untuk tombol update harian --}}
+<script>
+function konfirmasiUpdate() {
+ 
+    const konfirmasi = confirm(
+        'Perbarui data cuaca dan kurs mata uang untuk semua negara?\n\n' +
+        'Proses ini memerlukan beberapa menit.\n' +
+        'Jangan tutup halaman selama proses berjalan.'
+    );
+
+    if (konfirmasi) {
+        // Nonaktifkan tombol dan tampilkan loading
+        document.getElementById('btn-update-harian').disabled = true;
+        document.getElementById('btn-update-harian').innerHTML =
+            '<i class="fa-solid fa-rotate fa-spin me-2"></i> Sedang memperbarui...';
+        document.getElementById('loading-update-harian').style.display = 'block';
+    }
+
+    return konfirmasi;
+}
+</script>
+
 </body>
 </html>

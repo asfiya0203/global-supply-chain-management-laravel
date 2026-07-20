@@ -15,23 +15,23 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('negara_id')
-            ->constrained('negara')
-            ->cascadeOnDelete();
+                ->constrained('negara')
+                ->cascadeOnDelete();
 
             $table->string('judul');
-            $table->text('isi');
-            $table->string('url_sumber');
-            $table->unsignedInteger('skor_positif')->default(0);
-            $table->unsignedInteger('skor_negatif')->default(0);
-            $table->enum('sentimen', [
-                'positif',
-                'netral',
-                'negatif'
-            ]);
-            $table->dateTime('tanggal_duplikasi')->nullable();
-            $table->string('sumber_api');
-            $table->dateTime('waktu_data');
+            $table->text('deskripsi')->nullable();
+            $table->string('url', 750)->unique();
+            $table->string('sumber');
+            $table->enum('kategori', ['logistik', 'perdagangan', 'pelayaran', 'ekonomi']);
+
+            $table->integer('skor_positif')->default(0);
+            $table->integer('skor_negatif')->default(0);
+
+            $table->enum('sentimen', ['positif', 'netral', 'negatif']);
+            $table->integer('skor_risiko_berita')->default(1);
+            $table->dateTime('tanggal_publikasi')->nullable();
             $table->timestamps();
+            $table->index('negara_id');
         });
     }
 
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_beritas');
+        Schema::dropIfExists('data_berita');
     }
 };

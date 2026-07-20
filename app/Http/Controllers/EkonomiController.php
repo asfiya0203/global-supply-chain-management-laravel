@@ -93,31 +93,4 @@ class EkonomiController extends Controller
             'negara_gagal' => $negaraGagal,
         ]);
     }
-    public function ekonomiNegara($id)
-    {
-        $terbaru = IndikatorEkonomi::where('negara_id', $id)->orderBy('tahun', 'desc')->first();
-
-        if (!$terbaru) {
-            return response()->json(['message' => 'Data ekonomi belum tersedia'], 404);
-        }
-
-        return response()->json($terbaru);
-    }
-
-    public function trenEkonomi($id)
-    {
-        $tren = IndikatorEkonomi::where('negara_id', $id)->orderBy('tahun', 'asc')
-            ->get([
-                'tahun',
-                'gdp',
-                'inflasi',
-                'populasi',
-                'ekspor',
-                'impor',
-            ]);
-
-        if ($tren->isEmpty()) {
-            return response()->json(['message' => 'Data tren belum tersedia'], 404);}
-        return response()->json($tren);
-    }
 }

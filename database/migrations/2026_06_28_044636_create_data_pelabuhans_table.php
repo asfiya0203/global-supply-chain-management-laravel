@@ -15,16 +15,20 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('negara_id')
-            ->constrained('negara')
-            ->cascadeOnDelete();
-            
+                ->constrained('negara')
+                ->cascadeOnDelete();
+
             $table->string('nama_pelabuhan');
-            $table->string('status');
-            $table->decimal('tingkat_kepadatan', 5, 2);
-            $table->string('estimasi_keterlambatan');
-            $table->string('sumber_api');
-            $table->dateTime('waktu_data');
+            $table->string('nama_alternatif')->nullable();
+            $table->string('un_locode')->nullable();
+            $table->string('wilayah')->nullable();
+            $table->string('ukuran_pelabuhan')->nullable();
+            $table->string('tipe_pelabuhan')->nullable();
+            $table->string('penggunaan_pelabuhan')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
+            $table->unique(['negara_id', 'nama_pelabuhan']);
         });
     }
 

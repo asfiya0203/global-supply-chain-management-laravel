@@ -10,12 +10,17 @@ class DataBencana extends Model
 
     protected $fillable = [
         'negara_id',
+        'judul',
+        'url',
+        'sumber',
         'jenis_bencana',
-        'tingkat_keparahan',
-        'lokasi',
-        'deskripsi',
-        'sumber_api',
-        'waktu_data',
+        'skor_negatif',
+        'skor_risiko_bencana',
+        'tanggal_publikasi',
+    ];
+
+    protected $casts = [
+        'tanggal_publikasi' => 'datetime',
     ];
 
     public function negara()
