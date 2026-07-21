@@ -1,3 +1,4 @@
+let chartKurs;
 function muatKurs(id) {
 
     // Reset semua nilai
@@ -12,6 +13,8 @@ function muatKurs(id) {
 
     $('#loading-kurs').show();
     $('#konten-kurs').hide();
+
+    muatGrafikKurs(id);
 
     fetch(`${APP_URL.kurs}/${id}`)
         .then(res => res.json())
@@ -95,4 +98,58 @@ function formatAngkaKurs(angka) {
         minimumFractionDigits : 2,
         maximumFractionDigits : 4,
     });
+}
+
+function muatGrafikKurs(idNegara) {
+
+    fetch(`${APP_URL.kurs}/grafik/${idNegara}`)
+        .then(res => res.json())
+        .then(data => {
+
+            const labels = data.map(item => item.tanggal);
+            const values = data.map(item => item.kurs_ke_usd);
+
+            const ctx = document
+                .getElementById('grafikKurs')
+                .getContext('2d');
+
+            // Hapus grafik lama jika ada
+            if (chartKurs) {
+                chartKurs.destroy();
+            }
+
+            chartKurs = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Kurs ke USD',
+                        data: values,
+                        borderColor: '#311046',
+                        backgroundColor: 'rgba(49, 16, 70, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#ff9800',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+        })
+        .catch(error => {
+            console.error('Gagal memuat grafik kurs:', error);
+        });
 }

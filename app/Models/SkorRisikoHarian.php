@@ -13,12 +13,21 @@ class SkorRisikoHarian extends Model
         'tanggal',
         'skor_cuaca',
         'skor_bencana',
-        'skor_pelabuhan',
-        'skor_sanksi',
         'skor_berita',
+        'skor_kurs',
+        'skor_ekonomi',
         'skor_total',
         'level_risiko',
-        'ringkasan_ai',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'skor_cuaca' => 'decimal:2',
+        'skor_bencana' => 'decimal:2',
+        'skor_berita' => 'decimal:2',
+        'skor_kurs' => 'decimal:2',
+        'skor_ekonomi' => 'decimal:2',
+        'skor_total' => 'decimal:2',
     ];
 
     public function negara()

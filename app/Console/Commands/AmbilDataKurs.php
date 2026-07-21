@@ -24,7 +24,7 @@ class AmbilDataKurs extends Command
 
     public function handle()
     {
-        $tanggalMulai = Carbon::today()->subDays(6)->format('Y-m-d');
+        $tanggalMulai = Carbon::today()->format('Y-m-d');
         $tanggalAkhir = Carbon::today()->format('Y-m-d');
 
         $this->info('================================================');

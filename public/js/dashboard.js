@@ -62,6 +62,8 @@ $(document).ready(function () {
                 $('#detail-wilayah').text(negara.wilayah);
                 $('#detail-iso').text(negara.kode_iso2 + " / " +negara.kode_iso3);
 
+                $('#favorit-negara-id').val(negara.id);
+
                 $('#loading-negara').hide();
                 $('#konten-negara').show();
 

@@ -85,6 +85,16 @@
                                         <td><strong id="detail-iso"></strong></td>
                                     </tr>
                                 </table>
+                                <!-- Tombol Simpan Negara -->
+                                <form action="{{ route('favorit.store') }}" method="POST" class="mt-3">
+                                    @csrf
+                                    <input type="hidden" name="negara_id" id="favorit-negara-id">
+                                
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        <i class="fa-solid fa-bookmark me-2"></i>
+                                        Simpan Negara
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -330,6 +340,7 @@
 
 {{-- Leaflet --}}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {{-- Passing URL dari Laravel ke JS --}}
 <script>

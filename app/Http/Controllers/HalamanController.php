@@ -10,6 +10,7 @@ use App\Models\IndikatorEkonomi;
 use App\Models\DataBencana;
 use App\Models\DataBerita;
 use App\Models\DataPelabuhan;
+use App\Models\SkorRisikoHarian;
 use Carbon\Carbon;
 
 class HalamanController extends Controller
@@ -104,11 +105,89 @@ class HalamanController extends Controller
 
     public function halamanPelabuhan()
     {
+        $negara = Negara::orderBy('nama_negara')->get();
         $pelabuhan = DataPelabuhan::with('negara')
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->get();
 
-        return view('halaman_pelabuhan', compact('pelabuhan'));
+        return view('halaman_pelabuhan', compact('negara', 'pelabuhan'));
+    }
+
+    public function pelabuhanByNegara($id)
+    {
+        $pelabuhan = DataPelabuhan::where('negara_id', $id)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get([
+                'id',
+                'nama_pelabuhan',
+                'latitude',
+                'longitude'
+            ]);
+
+        return response()->json($pelabuhan);
+    }
+
+    public function grafik($negara_id)
+    {
+        $data = KursMataUang::where('negara_id', $negara_id)
+            ->orderBy('tanggal')
+            ->get(['tanggal', 'kurs_ke_usd']);
+    
+        return response()->json($data);
+    }
+    
+    // Grafik GDP
+    public function grafikGdp($negara_id)
+    {
+        $data = IndikatorEkonomi::where('negara_id', $negara_id)
+            ->orderBy('tahun', 'asc')
+            ->get(['tahun', 'gdp']);
+    
+        return response()->json($data);
+    }
+    
+    // Grafik Inflasi
+    public function grafikInflasi($negara_id)
+    {
+        $data = IndikatorEkonomi::where('negara_id', $negara_id)
+            ->orderBy('tahun', 'asc')
+            ->get(['tahun', 'inflasi']);
+    
+        return response()->json($data);
+    }
+    
+    // Grafik Populasi
+    public function grafikPopulasi($negara_id)
+    {
+        $data = IndikatorEkonomi::where('negara_id', $negara_id)
+            ->orderBy('tahun', 'asc')
+            ->get(['tahun', 'populasi']);
+    
+        return response()->json($data);
+    }
+
+    // Grafik Skor Risiko
+    public function grafikSkorRisiko($negara_id)
+    {
+        $data = SkorRisikoHarian::where('negara_id', $negara_id)
+            ->orderBy('tanggal', 'asc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'tanggal'    => Carbon::parse($item->tanggal)->format('d M'),
+                    'skor_total' => $item->skor_total,
+                ];
+            });
+    
+        return response()->json($data);
+    }  
+    
+    public function halamanTren()
+    {
+        $negara = Negara::orderBy('nama_negara')->get();
+    
+        return view('halaman_tren', compact('negara'));
     }
 }

@@ -17,7 +17,7 @@
             Data pelabuhan
         </a>
 
-        <a href="#">
+        <a href="{{ route('halaman.tren') }}">
             <i class="fa-solid fa-chart-line me-2"></i>
             Analisis Tren
         </a>
@@ -25,6 +25,16 @@
         <a href="{{ route('halaman.berita') }}">
             <i class="fa-solid fa-earth-americas me-2"></i>
             Berita Geopolitik
+        </a>
+
+        <a href="{{ route('perbandingan') }}">
+            <i class="fa-solid fa-chart-bar me-2"></i>
+            Perbandingan
+        </a>
+
+        <a href="{{ route('halaman.simpan-negara') }}">
+            <i class="fa-solid fa-bookmark me-2"></i>
+            Simpan Data Negara
         </a>
 
         <a href="#">

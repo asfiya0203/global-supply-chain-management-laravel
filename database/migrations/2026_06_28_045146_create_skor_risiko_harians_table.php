@@ -15,19 +15,21 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('negara_id')
-            ->constrained('negara')
-            ->cascadeOnDelete();
+                ->constrained('negara')
+                ->cascadeOnDelete();
 
             $table->date('tanggal');
-            $table->decimal('skor_cuaca', 5, 2);
-            $table->decimal('skor_bencana', 5, 2);
-            $table->decimal('skor_pelabuhan', 5, 2);
-            $table->decimal('skor_sanksi', 5, 2);
-            $table->decimal('skor_berita', 5, 2);
-            $table->decimal('skor_total', 5, 2);
-            $table->enum('level_risiko', ['rendah', 'sedang', 'tinggi']);
-            $table->text('ringkasan_ai');
+            $table->decimal('skor_cuaca', 5, 2)->default(1);
+            $table->decimal('skor_bencana', 5, 2)->default(1);
+            $table->decimal('skor_berita', 5, 2)->default(1);
+            $table->decimal('skor_kurs', 5, 2)->default(1);
+            $table->decimal('skor_ekonomi', 5, 2)->default(1);
+
+            $table->decimal('skor_total', 5, 2)->default(1);
+            $table->enum('level_risiko', ['rendah', 'sedang', 'tinggi'])->default('rendah');
             $table->timestamps();
+
+            $table->unique(['negara_id', 'tanggal']);
         });
     }
 
