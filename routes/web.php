@@ -57,16 +57,11 @@ Route::get('/api/ekonomi/{id}/tren', [HalamanController::class, 'trenEkonomi'])-
 Route::get('/berita-hari-ini', [HalamanController::class, 'halamanBerita'])->name('halaman.berita');
 
 Route::get('/pelabuhan', [HalamanController::class, 'halamanPelabuhan'])->name('halaman.pelabuhan');
+Route::get('/api/skor-risiko/{id}', [HalamanController::class, 'skorRisiko'])
+    ->name('skor.risiko');
 // API map
 Route::get('/api/negara-koordinat', [PetaController::class, 'koordinat'])->name('peta.koordinat');
 Route::get('/api/negara/{id}', [PetaController::class, 'detail'])->name('peta.detail');
-
-// Api Indikator Ekonomi
-Route::post('/admin/ekonomi/update', [EkonomiController::class, 'ambilSemuaEkonomi'])->name('admin.ekonomi.update');
-// Tombol update cuaca + kurs
-Route::post('/admin/update-cuaca-kurs', [UpdateHarianController::class, 'updateCuacaKurs'])->name('admin.update.cuaca.kurs');
-// Tombol update berita
-Route::post('/admin/update-berita-bencana', [UpdateHarianController::class, 'updateBerita'])->name('admin.update.berita.bencana');
 
 Route::get('/perbandingan', [PerbandinganController::class, 'index'])->name('perbandingan');
 

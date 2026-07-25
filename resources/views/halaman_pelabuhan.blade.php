@@ -46,10 +46,36 @@
                 Peta Pelabuhan Negara
             </div>
             <div class="card-body p-2">
-                <div id="map" style="height: 500px;"></div>
+                <div id="map" style="height: 350px;"></div>
             </div>
         </div>
-
+        
+        {{-- Card Tabel Pelabuhan --}}
+        <div class="card shadow mt-4">
+            <div class="card-header bg-header-custom">
+                <i class="fa-solid fa-table"></i>
+                Informasi Pelabuhan
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-bordered table-hover mb-0" id="tabel-pelabuhan">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama Pelabuhan</th>
+                            <th>Ukuran Pelabuhan</th>
+                            <th>Tipe Pelabuhan</th>
+                            <th>Pengguna Pelabuhan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-pelabuhan-body">
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                Pilih negara untuk menampilkan data pelabuhan
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -84,30 +110,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event ketika negara dipilih
     $('#negara-pelabuhan').on('change', function () {
-
+    
         let negaraId = $(this).val();
-
-        // Hapus semua marker lama
+        let tbody = $('#tabel-pelabuhan-body');
+    
         markers.clearLayers();
-
+    
         if (!negaraId) {
             map.setView([0, 0], 2);
+            tbody.html('<tr><td colspan="4" class="text-center text-muted">Pilih negara untuk menampilkan data pelabuhan</td></tr>');
             return;
         }
-
-        // Ambil data pelabuhan berdasarkan negara
+    
         fetch(`/api/pelabuhan/${negaraId}`)
             .then(response => response.json())
             .then(data => {
-
+    
                 if (data.length === 0) {
                     alert('Tidak ada data pelabuhan untuk negara ini.');
                     map.setView([0, 0], 2);
+                    tbody.html('<tr><td colspan="4" class="text-center text-muted">Tidak ada data pelabuhan</td></tr>');
                     return;
                 }
-
+    
+                tbody.empty();
+    
                 data.forEach(item => {
-
+    
                     let marker = L.marker([
                         item.latitude,
                         item.longitude
@@ -116,19 +145,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         <strong>${item.nama_pelabuhan}</strong><br>
                         Koordinat: ${item.latitude}, ${item.longitude}
                     `);
-
+    
                     markers.addLayer(marker);
-
+    
+                    tbody.append(`
+                        <tr>
+                            <td>${item.nama_pelabuhan ?? '-'}</td>
+                            <td>${item.ukuran_pelabuhan ?? '-'}</td>
+                            <td>${item.tipe_pelabuhan ?? '-'}</td>
+                            <td>${item.penggunaan_pelabuhan ?? '-'}</td>
+                        </tr>
+                    `);
+    
                 });
-
-                // Zoom ke semua marker
+    
                 map.fitBounds(markers.getBounds());
-
+    
             })
             .catch(error => {
                 console.error('Gagal memuat data pelabuhan:', error);
+                tbody.html('<tr><td colspan="4" class="text-center text-danger">Gagal memuat data</td></tr>');
             });
-
+    
     });
 
 });

@@ -76,7 +76,12 @@
                                             <strong>{{ $item->negara->nama_negara }}</strong>
                                         </td>
 
-                                        <td>{{ $item->negara->wilayah }}</td>
+                                        <td>
+                                            <a href="{{ route('dashboard', ['negara' => $item->negara->id]) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                        </td>
 
                                         <td class="text-center">
 

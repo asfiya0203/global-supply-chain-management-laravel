@@ -2,7 +2,7 @@ let chartSkorRisiko;
 
 function muatGrafikSkorRisiko(idNegara) {
 
-    fetch(`${APP_URL.skorRisiko}/${idNegara}`)
+    fetch(`${APP_URL.muatGrafikSkorRisiko}/${idNegara}`)
         .then(res => res.json())
         .then(data => {
 

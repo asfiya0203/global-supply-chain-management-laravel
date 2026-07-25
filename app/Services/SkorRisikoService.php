@@ -23,7 +23,7 @@ class SkorRisikoService
             // =========================
             $cuaca = DataCuaca::where('negara_id', $negara->id)
                 ->whereDate('tanggal_data', $tanggal)
-                ->latest()
+                ->latest('tanggal_data')
                 ->first();
 
             $skorCuaca = $this->hitungSkorCuaca(
@@ -35,26 +35,25 @@ class SkorRisikoService
             // =========================
             // 2. SKOR BENCANA (1-100)
             // =========================
-            $skorBencana = DataBencana::where('negara_id', $negara->id)
-                ->whereDate('tanggal_publikasi', $tanggal)
-                ->max('skor_risiko_bencana');
-
-            $skorBencana = $this->konversiKe100($skorBencana ?? 1);
+            $skorBencana = $this->hitungSkorBencana(
+                $negara->id,
+                $tanggal
+            );
 
             // =========================
             // 3. SKOR BERITA (1-100)
             // =========================
-            $skorBerita = DataBerita::where('negara_id', $negara->id)
-                ->whereDate('tanggal_publikasi', $tanggal)
-                ->avg('skor_risiko_berita');
-
-            $skorBerita = $this->konversiKe100($skorBerita ?? 1);
+            $skorBerita = $this->hitungSkorBerita(
+                $negara->id,
+                $tanggal
+            );
 
             // =========================
             // 4. SKOR KURS (1-100)
             // =========================
             $kurs = KursMataUang::where('negara_id', $negara->id)
                 ->whereDate('tanggal', $tanggal)
+                ->latest('tanggal')
                 ->first();
 
             $skorKurs = $this->hitungSkorKurs(
@@ -183,10 +182,19 @@ class SkorRisikoService
     // =====================================================
     private function hitungSkorKurs($perubahanPersen)
     {
-        if ($perubahanPersen >= 10) return 100;
-        if ($perubahanPersen >= 5) return 75;
-        if ($perubahanPersen >= 2) return 50;
-        return 25;
+        $perubahan = abs($perubahanPersen);
+
+        if ($perubahan < 0.5) {
+            return 10;      
+        } elseif ($perubahan < 2) {
+            return 20;      
+        } elseif ($perubahan < 5) {
+            return 45;      
+        } elseif ($perubahan < 10) {
+            return 70;     
+        } else {
+            return 90;      
+        }
     }
 
     // =====================================================
@@ -219,5 +227,88 @@ class SkorRisikoService
         // Bobot: Inflasi 70%, GDP 30%
         return ($skorInflasi * 0.7) +
                ($skorGdp * 0.3);
+    }
+
+
+    // =====================================================
+    // PERHITUNGAN SKOR BERITA (1-100)
+    // =====================================================
+    private function hitungSkorBerita($negaraId, $tanggal)
+    {
+        $berita = DataBerita::where('negara_id', $negaraId)
+            ->whereDate('tanggal_publikasi', $tanggal)
+            ->get();
+
+        if ($berita->isEmpty()) {
+            return 25;
+        }
+
+        $total = $berita->count();
+
+        $positif = $berita->where('sentimen', 'positif')->count();
+        $netral  = $berita->where('sentimen', 'netral')->count();
+        $negatif = $berita->where('sentimen', 'negatif')->count();
+
+        $pctPositif = $positif / $total;
+        $pctNetral  = $netral  / $total;
+        $pctNegatif = $negatif / $total;
+
+        $skor =
+            ($pctPositif * 20) +
+            ($pctNetral  * 50) +
+            ($pctNegatif * 90);
+
+        return round($skor,2);
+    }
+
+    private function hitungSkorBencana($negaraId, $tanggal)
+    {
+        $bencana = DataBencana::where('negara_id', $negaraId)
+            ->whereDate('tanggal_publikasi', $tanggal)
+            ->get();
+    
+        if ($bencana->isEmpty()) {
+            return 25;
+        }
+
+        // 1. Rata-rata skor negatif
+        $rataNegatif = $bencana->avg('skor_negatif');
+    
+        // Konversi ke 0-100
+        if ($rataNegatif >= 10) {
+            $skorKeparahan = 100;
+        } elseif ($rataNegatif >= 8) {
+            $skorKeparahan = 85;
+        } elseif ($rataNegatif >= 6) {
+            $skorKeparahan = 70;
+        } elseif ($rataNegatif >= 4) {
+            $skorKeparahan = 55;
+        } elseif ($rataNegatif >= 2) {
+            $skorKeparahan = 40;
+        } else {
+            $skorKeparahan = 25;
+        }
+
+        // 2. Jumlah berita
+        $jumlah = $bencana->count();
+    
+        if ($jumlah >= 15) {
+            $skorJumlah = 100;
+        } elseif ($jumlah >= 10) {
+            $skorJumlah = 80;
+        } elseif ($jumlah >= 6) {
+            $skorJumlah = 60;
+        } elseif ($jumlah >= 3) {
+            $skorJumlah = 40;
+        } else {
+            $skorJumlah = 20;
+        }
+
+        // 3. Skor akhir
+        $skor =
+            ($skorKeparahan * 0.8) +
+            ($skorJumlah * 0.2);
+    
+        return round($skor, 2);
     }
 }

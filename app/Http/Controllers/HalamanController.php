@@ -11,14 +11,47 @@ use App\Models\DataBencana;
 use App\Models\DataBerita;
 use App\Models\DataPelabuhan;
 use App\Models\SkorRisikoHarian;
+use App\Models\Favorit;
 use Carbon\Carbon;
 
 class HalamanController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $negara = Negara::all();
-        return view('dashboard', compact('negara'));
+        return view('dashboard', [
+            'negara' => $negara,
+            'selectedNegara' => $request->negara
+        ]);
+    }
+
+    public function skorRisiko($id)
+    {
+        $risiko = SkorRisikoHarian::where('negara_id', $id)
+            ->latest('tanggal')
+            ->first();
+    
+        if (!$risiko) {
+            return response()->json([
+                'skor_total'    => '-',
+                'level_risiko'  => '-',
+                'skor_cuaca'    => '-',
+                'skor_bencana'  => '-',
+                'skor_berita'   => '-',
+                'skor_kurs'     => '-',
+                'skor_ekonomi'  => '-',
+            ]);
+        }
+    
+        return response()->json([
+            'skor_total'    => $risiko->skor_total,
+            'level_risiko'  => $risiko->level_risiko,
+            'skor_cuaca'    => $risiko->skor_cuaca,
+            'skor_bencana'  => $risiko->skor_bencana,
+            'skor_berita'   => $risiko->skor_berita,
+            'skor_kurs'     => $risiko->skor_kurs,
+            'skor_ekonomi'  => $risiko->skor_ekonomi,
+        ]);
     }
 
     public function cuacaDetail($id)
@@ -123,9 +156,12 @@ class HalamanController extends Controller
                 'id',
                 'nama_pelabuhan',
                 'latitude',
-                'longitude'
+                'longitude',
+                'ukuran_pelabuhan',
+                'tipe_pelabuhan',
+                'penggunaan_pelabuhan'
             ]);
-
+    
         return response()->json($pelabuhan);
     }
 

@@ -16,8 +16,8 @@ class AmbilDataCuaca extends Command
     public function handle()
     {
         $semuaNegara = Negara::all();
-        $tanggalMulai = Carbon::yesterday()->format('Y-m-d');
-        $tanggalAkhir = Carbon::yesterday()->format('Y-m-d');
+        $tanggalMulai = Carbon::today()->format('Y-m-d');
+        $tanggalAkhir = Carbon::today()->format('Y-m-d');
 
         foreach ($semuaNegara as $negara) {$this->info("Mengambil data cuaca {$negara->nama_negara}");
 

@@ -4,27 +4,32 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\SkorRisikoService;
+use Carbon\Carbon;
 
 class HitungSkorRisiko extends Command
 {
-    protected $signature = 'skor:update {tanggal?}';
+    protected $signature = 'skor:update {mulai?} {akhir?}';
+
     protected $description = 'Menghitung dan memperbarui skor risiko harian';
 
     public function handle(SkorRisikoService $service)
     {
-        $tanggalMulai = $this->argument('tanggal') ?? '2026-07-11';
-        $tanggalHariIni = now()->format('Y-m-d');
+        $mulai = $this->argument('mulai') ?? '2026-07-11';
+        $akhir = $this->argument('akhir') ?? now()->format('Y-m-d');
 
-        $this->info("Memulai perhitungan skor risiko dari {$tanggalMulai} sampai {$tanggalHariIni}...");
-        $tanggal = \Carbon\Carbon::parse($tanggalMulai);
+        $tanggal = Carbon::parse($mulai);
 
-        while ($tanggal->format('Y-m-d') <= $tanggalHariIni) {
+        while ($tanggal->lte(Carbon::parse($akhir))) {
+
             $service->hitungSemuaSkorRisiko($tanggal->format('Y-m-d'));
-            $this->info("Tanggal {$tanggal->format('Y-m-d')} selesai dihitung");
+
+            $this->info("Selesai: ".$tanggal->format('Y-m-d'));
+
             $tanggal->addDay();
         }
 
         $this->info('Perhitungan skor risiko selesai.');
+
         return Command::SUCCESS;
     }
 }

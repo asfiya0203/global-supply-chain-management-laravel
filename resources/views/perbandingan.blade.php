@@ -160,20 +160,6 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="fw-semibold">Tingkat Risiko</td>
-                                    <td class="text-center">
-                                        <span class="badge bg-danger">
-                                            {{ $risk1->tingkat_risiko ?? '-' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge bg-danger">
-                                            {{ $risk2->tingkat_risiko ?? '-' }}
-                                        </span>
-                                    </td>
-                                </tr>
-
-                                <tr>
                                     <td class="fw-semibold">Mata Uang</td>
                                     <td>{{ $country1->kode_mata_uang ?? '-' }}</td>
                                     <td>{{ $country2->kode_mata_uang ?? '-' }}</td>

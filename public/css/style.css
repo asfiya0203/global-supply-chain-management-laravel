@@ -71,19 +71,11 @@ body{
 
 .content{
     flex:1;
-    background:white;
-    margin:15px;
-    border-radius:15px;
-    padding:25px;
-    overflow:auto;
-}
-
-.content{
-    margin-left:250px; /* sama dengan lebar sidebar */
-    flex:1;
+    margin-left:250px;
     padding:30px;
     background:#f5f6fa;
     min-height:100vh;
+    width:calc(100% - 250px);
 }
 
 #map {

@@ -13,13 +13,8 @@
         </a>
 
         <a href="{{ route('halaman.pelabuhan') }}">
-            <i class="fa-solid fa-bookmark me-2"></i>
+            <i class="fa-solid fa-anchor me-2"></i>
             Data pelabuhan
-        </a>
-
-        <a href="{{ route('halaman.tren') }}">
-            <i class="fa-solid fa-chart-line me-2"></i>
-            Analisis Tren
         </a>
 
         <a href="{{ route('halaman.berita') }}">
@@ -43,23 +38,4 @@
         </a>
 
     </div>
-
-    <div class="bottom-menu">
-
-        <button class="btn-report">
-            <i class="fa-solid fa-circle-plus"></i>
-            Buat Laporan Baru
-        </button>
-
-        <a href="#">
-            <i class="fa-regular fa-circle-question me-2"></i>
-            Bantuan
-        </a>
-        <a href="#">
-            <i class="fa-solid fa-right-from-bracket me-2"></i>
-            Keluar
-        </a>
-
-    </div>
-
 </div>
