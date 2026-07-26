@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-5 text-md-end mt-4 mt-md-0">
                 <div class="d-inline-block text-center">
-                    <div id="skor-total" class="display-3 fw-bold text-primary" style="line-height: 1;">-</div>
+                    <div id="skor-total" class="display-3 fw-bold" style="line-height: 1; color: #000;">-</div>
                     <div class="mt-2">
                         <span id="level-risiko" class="badge rounded-pill px-3 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px; background-color: #e2e8f0; color: #ffffff;">
                             MENUNGGU DATA

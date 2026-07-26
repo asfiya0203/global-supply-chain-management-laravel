@@ -14,7 +14,7 @@ class HitungSkorRisiko extends Command
 
     public function handle(SkorRisikoService $service)
     {
-        $mulai = $this->argument('mulai') ?? '2026-07-11';
+        $mulai = $this->argument('mulai') ?? '2026-07-24';
         $akhir = $this->argument('akhir') ?? now()->format('Y-m-d');
 
         $tanggal = Carbon::parse($mulai);

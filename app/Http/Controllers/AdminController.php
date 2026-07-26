@@ -8,37 +8,20 @@ use App\Models\Negara;
 use App\Models\DataPelabuhan;
 use App\Models\DataBerita;
 use App\Models\DataCuaca;
+use App\Models\DataBencana;
+use App\Models\IndikatorEkonomi;
+use App\Models\KursMataUang;
+use App\Models\SkorRisikoHarian;
 use App\Http\Controllers\UpdateHarianController;
 
 class AdminController extends Controller
 {
-    protected $updateHarian;
-
-    public function __construct(UpdateHarianController $updateHarian)
-    {
-        $this->updateHarian = $updateHarian;
-    }
-
     public function dashboard()
     {
-        // Auto update di background saat admin buka halaman
-        // Halaman tetap langsung muncul, update jalan di belakang
-        $sudahUpdate = DataCuaca::whereDate('tanggal_data', today())->exists();
-
-        if (!$sudahUpdate) {
-            dispatch(function () {
-                app(UpdateHarianController::class)->cekDanUpdate();
-            })->afterResponse();
-        }
-
-        // Statistik
-        $totalUser      = User::count();
-        $totalNegara    = Negara::count();
-        $totalPelabuhan = DataPelabuhan::count();
-        $totalBerita    = DataBerita::count();
-
         // Data terbaru
-        $users = User::latest()->take(5)->get();
+        $users = User::where('role', 'pengguna')
+            ->latest()
+            ->get();
 
         $pelabuhan = DataPelabuhan::with('negara')
             ->latest()
@@ -50,14 +33,55 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
+        $updateTerakhir = [
+            'skor' => SkorRisikoHarian::max('tanggal'),
+            'kurs' => KursMataUang::max('tanggal'),
+            'ekonomi' => IndikatorEkonomi::max('tahun'),
+            'cuaca' => DataCuaca::max('tanggal_data'),
+            'berita' => DataBerita::max('tanggal_publikasi'),
+        ];
         return view('dashboard_admin', compact(
-            'totalUser',
-            'totalNegara',
-            'totalPelabuhan',
-            'totalBerita',
             'users',
             'pelabuhan',
-            'berita'
+            'berita',
+            'updateTerakhir'
         ));
+    }
+
+    public function halamanPelabuhan()
+    {
+        $negara = Negara::orderBy('nama_negara')->get();
+
+        $pelabuhan = DataPelabuhan::with('negara')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
+
+        return view('dashboard_admin.pelabuhan', compact('negara', 'pelabuhan'));
+    }
+
+     public function updateHarian()
+        {
+            // nanti panggil command update pelabuhan
+            // Artisan::call('pelabuhan:update');
+
+            return back()->with('success', 'Data pelabuhan berhasil diperbarui.');
+    }
+
+    public function halamanBerita()
+    {
+        $batasWaktu = Carbon::now()->subDay();
+    
+        $berita = DataBerita::with('negara')
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->get();
+    
+        $bencana = DataBencana::with('negara')
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->get();
+    
+        return view('halaman_berita', compact('berita', 'bencana'));
     }
 }

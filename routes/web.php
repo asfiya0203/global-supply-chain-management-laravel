@@ -9,6 +9,7 @@ use App\Http\Controllers\EkonomiController;
 use App\Http\Controllers\UpdateHarianController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PerbandinganController;
+use App\Http\Controllers\FavoritController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,24 +23,24 @@ Route::get('/register',[AuthController::class, 'showRegister'])->name('register'
 Route::post('/register',[AuthController::class, 'register'])->name('register.store');
 
 // Admin
-Route::get('/admin', [AdminController::class, 'showAdmin'])->name('dashboard_admin');
-Route::get('/admin', [AdminController::class, 'dashboard'])->name('dashboard_admin');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard_admin');
+    Route::post('/update', [UpdateHarianController::class, 'update'])->name('update');
+    Route::delete('/berita/{id}', [AdminController::class, 'destroyBerita'])->name('berita.destroy');
+    Route::get('/pelabuhan', [AdminController::class, 'halamanPelabuhan'])->name('pelabuhan');
+    Route::post('/pelabuhan/update', [AdminPelabuhanController::class, 'updateHarian'])->name('pelabuhan.update');
+    Route::get('/berita-hari-ini', [AdminPelabuhanController::class, 'halamanBerita'])->name('halaman.berita');
+});
 
 // API dashboard pengguna
 Route::get('/dashboard', [HalamanController::class, 'dashboard'])->name('dashboard');
 Route::get('/api/kurs/grafik/{negara_id}', [HalamanController::class, 'grafik']);
-Route::get('/api/ekonomi/grafik/gdp/{id}', [HalamanController::class, 'grafikGdp'])
-    ->name('ekonomi.grafik.gdp');
+Route::get('/api/ekonomi/grafik/gdp/{id}', [HalamanController::class, 'grafikGdp'])->name('ekonomi.grafik.gdp');
 
-Route::get('/api/ekonomi/grafik/inflasi/{id}',  [HalamanController::class, 'grafikInflasi'])
-    ->name('ekonomi.grafik.inflasi');
+Route::get('/api/ekonomi/grafik/inflasi/{id}',  [HalamanController::class, 'grafikInflasi'])->name('ekonomi.grafik.inflasi');
+Route::get('/api/ekonomi/grafik/populasi/{id}', [HalamanController::class, 'grafikPopulasi'])->name('ekonomi.grafik.populasi');
 
-Route::get('/api/ekonomi/grafik/populasi/{id}', [HalamanController::class, 'grafikPopulasi'])
-    ->name('ekonomi.grafik.populasi');
-
-Route::get('/halaman-tren', [HalamanController::class, 'halamanTren'])
-    ->name('halaman.tren');
-
+Route::get('/halaman-tren', [HalamanController::class, 'halamanTren'])->name('halaman.tren');
 Route::get('/api/pelabuhan/{id}', [HalamanController::class, 'pelabuhanByNegara']);    
 
 Route::get('/api/skor-risiko/grafik/{id}', [HalamanController::class, 'grafikSkorRisiko']);
@@ -57,41 +58,18 @@ Route::get('/api/ekonomi/{id}/tren', [HalamanController::class, 'trenEkonomi'])-
 Route::get('/berita-hari-ini', [HalamanController::class, 'halamanBerita'])->name('halaman.berita');
 
 Route::get('/pelabuhan', [HalamanController::class, 'halamanPelabuhan'])->name('halaman.pelabuhan');
-Route::get('/api/skor-risiko/{id}', [HalamanController::class, 'skorRisiko'])
-    ->name('skor.risiko');
+Route::get('/api/skor-risiko/{id}', [HalamanController::class, 'skorRisiko'])->name('skor.risiko');
 // API map
 Route::get('/api/negara-koordinat', [PetaController::class, 'koordinat'])->name('peta.koordinat');
 Route::get('/api/negara/{id}', [PetaController::class, 'detail'])->name('peta.detail');
 
 Route::get('/perbandingan', [PerbandinganController::class, 'index'])->name('perbandingan');
 
-use App\Http\Controllers\FavoritController;
-
+// simpan negara
 Route::middleware('auth')->group(function () {
-
-    // Halaman Simpan Negara
-    Route::get('/simpan-negara', [FavoritController::class, 'index'])
-        ->name('halaman.simpan-negara');
-
-    // Simpan negara ke favorit
-    Route::post('/favorit', [FavoritController::class, 'store'])
-        ->name('favorit.store');
-
-    // Hapus negara dari favorit
-    Route::delete('/favorit/{id}', [FavoritController::class, 'destroy'])
-        ->name('favorit.destroy');
-
+    Route::get('/simpan-negara', [FavoritController::class, 'index'])->name('halaman.simpan-negara');
+    Route::post('/favorit', [FavoritController::class, 'store'])->name('favorit.store');
+    Route::delete('/favorit/{id}', [FavoritController::class, 'destroy'])->name('favorit.destroy');
 });
 
-Route::post('/favorit', [FavoritController::class, 'store'])
-    ->name('favorit.store');
-
-Route::prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/dashboard', [AdminController::class, 'index'])
-        ->name('dashboard');
-
-    Route::delete('/berita/{id}', [AdminController::class, 'destroyBerita'])
-        ->name('berita.destroy');
-
-});
+Route::post('/favorit', [FavoritController::class, 'store'])->name('favorit.store');

@@ -9,6 +9,7 @@ use App\Models\DataBerita;
 use App\Models\KursMataUang;
 use App\Models\IndikatorEkonomi;
 use App\Models\SkorRisikoHarian;
+use Carbon\Carbon;  
 
 class SkorRisikoService
 {
@@ -85,11 +86,11 @@ class SkorRisikoService
             // =========================
             // 7. TENTUKAN LEVEL RISIKO
             // =========================
-            if ($skorTotal >= 76) {
+            if ($skorTotal >= 90) {
                 $level = 'kritis';
-            } elseif ($skorTotal >= 51) {
+            } elseif ($skorTotal >= 60) {
                 $level = 'tinggi';
-            } elseif ($skorTotal >= 26) {
+            } elseif ($skorTotal >= 40) {
                 $level = 'sedang';
             } else {
                 $level = 'rendah';
@@ -236,7 +237,7 @@ class SkorRisikoService
     private function hitungSkorBerita($negaraId, $tanggal)
     {
         $berita = DataBerita::where('negara_id', $negaraId)
-            ->whereDate('tanggal_publikasi', $tanggal)
+            ->where('tanggal_publikasi', '>=', Carbon::parse($tanggal)->subHours(12))
             ->get();
 
         if ($berita->isEmpty()) {
@@ -264,7 +265,7 @@ class SkorRisikoService
     private function hitungSkorBencana($negaraId, $tanggal)
     {
         $bencana = DataBencana::where('negara_id', $negaraId)
-            ->whereDate('tanggal_publikasi', $tanggal)
+            ->whereDate('tanggal_publikasi', Carbon::parse($tanggal)->subDay())
             ->get();
     
         if ($bencana->isEmpty()) {

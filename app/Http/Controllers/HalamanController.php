@@ -123,16 +123,18 @@ class HalamanController extends Controller
 
     public function halamanBerita()
     {
+        $batasWaktu = Carbon::now()->subDay();
+    
         $berita = DataBerita::with('negara')
-            ->whereDate('tanggal_publikasi', Carbon::today())
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
             ->orderBy('tanggal_publikasi', 'desc')
             ->get();
-
+    
         $bencana = DataBencana::with('negara')
-            ->whereDate('tanggal_publikasi', Carbon::today())
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
             ->orderBy('tanggal_publikasi', 'desc')
             ->get();
-
+    
         return view('halaman_berita', compact('berita', 'bencana'));
     }
 

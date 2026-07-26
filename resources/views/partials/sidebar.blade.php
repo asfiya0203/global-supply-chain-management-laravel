@@ -32,10 +32,5 @@
             Simpan Data Negara
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-user me-2"></i>
-            Profil
-        </a>
-
     </div>
 </div>
