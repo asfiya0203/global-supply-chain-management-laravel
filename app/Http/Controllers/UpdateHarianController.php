@@ -24,27 +24,16 @@ class UpdateHarianController extends Controller
         $this->skorRisikoService    = $skorRisikoService;
     }
 
-    // =====================================================
-    // DIPANGGIL OTOMATIS — dari HalamanController
-    // saat admin buka dashboard, hanya kalau belum update hari ini
-    // =====================================================
     public function cekDanUpdate()
     {
-        // Cek apakah sudah ada data cuaca hari ini
         $sudahUpdate = DataCuaca::whereDate('tanggal_data', today())->exists();
 
         if ($sudahUpdate) {
-            // Sudah ada data hari ini — tidak perlu update lagi
             return;
         }
-
-        // Belum ada — jalankan semua update
         $this->jalankanSemuaUpdate();
     }
 
-    // =====================================================
-    // TOMBOL MANUAL — Update Cuaca + Kurs
-    // =====================================================
     public function updateCuacaKurs()
     {
         Artisan::call('cuaca:update');
@@ -68,9 +57,6 @@ class UpdateHarianController extends Controller
         return redirect()->back()->with(['success' => $pesan]);
     }
 
-    // =====================================================
-    // TOMBOL MANUAL — Update Berita Ekonomi saja
-    // =====================================================
     public function updateBeritaEkonomi()
     {
         $hasil = $this->beritaService->updateBerita();
@@ -80,9 +66,6 @@ class UpdateHarianController extends Controller
         ]);
     }
 
-    // =====================================================
-    // TOMBOL MANUAL — Update Berita Bencana saja
-    // =====================================================
     public function updateBeritaBencana()
     {
         $hasil = $this->beritaBencanaService->updateBeritaBencana();
@@ -92,9 +75,6 @@ class UpdateHarianController extends Controller
         ]);
     }
 
-    // =====================================================
-    // TOMBOL MANUAL — Update Berita (Ekonomi + Bencana)
-    // =====================================================
     public function updateBerita()
     {
         $hasilBerita  = $this->beritaService->updateBerita();
@@ -107,22 +87,33 @@ class UpdateHarianController extends Controller
         ]);
     }
 
-    // =====================================================
-    // TOMBOL MANUAL — Update Semua + Hitung Skor
-    // =====================================================
     public function update()
     {
-        $this->jalankanSemuaUpdate();
+        $cuaca = DataCuaca::whereDate('tanggal_data', today())->exists();
 
+        $kurs = KursMataUang::whereDate('tanggal', today())->exists();
+
+        $berita = DataBerita::whereDate('tanggal_publikasi', today())->exists();
+
+        $bencana = DataBencana::whereDate('tanggal_publikasi', today())->exists();
+
+        $skor = SkorRisikoHarian::whereDate('tanggal', today())->exists();
+
+        // Jika semua data hari ini sudah ada
+        if ($cuaca && $kurs && $berita && $bencana && $skor) {
+            return redirect()->back()->with([
+                'success' => 'Data hari ini sudah diperbarui. Tidak ada proses update yang dijalankan.'
+            ]);
+        }
+    
+        // Jalankan update
+        $this->jalankanSemuaUpdate();
+    
         return redirect()->back()->with([
             'success' => 'Semua data berhasil diperbarui dan skor risiko telah dihitung.'
         ]);
     }
 
-    // =====================================================
-    // PRIVATE — logika update semua (dipakai oleh
-    // cekDanUpdate() dan update() supaya tidak duplikat)
-    // =====================================================
     private function jalankanSemuaUpdate()
     {
         // 1. Cuaca

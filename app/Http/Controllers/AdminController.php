@@ -13,24 +13,26 @@ use App\Models\IndikatorEkonomi;
 use App\Models\KursMataUang;
 use App\Models\SkorRisikoHarian;
 use App\Http\Controllers\UpdateHarianController;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Data terbaru
         $users = User::where('role', 'pengguna')
             ->latest()
             ->get();
 
-        $pelabuhan = DataPelabuhan::with('negara')
-            ->latest()
-            ->take(5)
-            ->get();
+        $batasWaktu = Carbon::now()->subDay();
 
         $berita = DataBerita::with('negara')
-            ->latest()
-            ->take(5)
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->get();
+
+        $bencana = DataBencana::with('negara')
+            ->where('tanggal_publikasi', '>=', $batasWaktu)
+            ->orderBy('tanggal_publikasi', 'desc')
             ->get();
 
         $updateTerakhir = [
@@ -40,10 +42,11 @@ class AdminController extends Controller
             'cuaca' => DataCuaca::max('tanggal_data'),
             'berita' => DataBerita::max('tanggal_publikasi'),
         ];
+
         return view('dashboard_admin', compact(
             'users',
-            'pelabuhan',
             'berita',
+            'bencana',
             'updateTerakhir'
         ));
     }
@@ -82,6 +85,6 @@ class AdminController extends Controller
             ->orderBy('tanggal_publikasi', 'desc')
             ->get();
     
-        return view('halaman_berita', compact('berita', 'bencana'));
+        return view('dashboard_admin.data-berita', compact('berita', 'bencana'));
     }
 }
