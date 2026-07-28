@@ -7,6 +7,11 @@ use App\Services\BeritaService;
 use App\Services\BeritaBencanaService;
 use App\Services\SkorRisikoService;
 use App\Models\DataCuaca;
+use App\Models\KursMataUang;
+use App\Models\IndikatorEkonomi;
+use App\Models\DataBencana;
+use App\Models\DataBerita;
+use App\Models\SkorRisikoHarian;
 
 class UpdateHarianController extends Controller
 {
