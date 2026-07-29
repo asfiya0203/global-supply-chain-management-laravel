@@ -1,4 +1,4 @@
-<img width="1866" height="863" alt="Screenshot 2026-07-27 095928" src="https://github.com/user-attachments/assets/492b75e2-3e0c-49f0-9190-78190965f367" />## Tampilan Website Global Supply Chain Management Laravel
+## Tampilan Website Global Supply Chain Management Laravel
 ### 1. Halaman Login Admin dan Pengguna
 <img width="698" height="876" alt="Screenshot 2026-07-22 011519" src="https://github.com/user-attachments/assets/224db5e0-e6a4-4ba6-817b-272fb38cd9be" />
 
@@ -19,7 +19,7 @@
 <img width="827" height="377" alt="image" src="https://github.com/user-attachments/assets/92208060-f4b9-49cd-a672-edaae68e85f4" />
 
 #### Grafik Kurs
-<img width="396" height="183" alt="image" src="https://github.com/user-attachments/assets/5129c261-f838-4828-ae3b-766649bdcdce" />
+<img width="1866" height="863" alt="Screenshot 2026-07-27 095928" src="https://github.com/user-attachments/assets/492b75e2-3e0c-49f0-9190-78190965f367" />
 
 #### Grafik GDP
 <img width="1856" height="854" alt="Screenshot 2026-07-27 100016" src="https://github.com/user-attachments/assets/bac55d99-ba32-4fff-b0b3-31f83db3589f" />
