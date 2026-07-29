@@ -1,9 +1,9 @@
 ## Tampilan Website Global Supply Chain Management Laravel
 ### 1. Halaman Login Admin dan Pengguna
-<img width="698" height="876" alt="Screenshot 2026-07-22 011519" src="https://github.com/user-attachments/assets/224db5e0-e6a4-4ba6-817b-272fb38cd9be" />
+<img width="1914" height="872" alt="image" src="https://github.com/user-attachments/assets/977c968a-f2c6-44b7-9614-aa67c4e00b87" />
 
 ### 2. Halaman Register Pengguna
-<img width="888" height="862" alt="Screenshot 2026-07-22 011553" src="https://github.com/user-attachments/assets/0a841666-d899-444d-b591-eb53efd17c4a" />
+<img width="1913" height="868" alt="image" src="https://github.com/user-attachments/assets/90bba93b-7f3e-4df0-83d4-d02ccb052259" />
 
 ### 3. Halaman Awal Dashboard
 <img width="827" height="383" alt="image" src="https://github.com/user-attachments/assets/edf62fa7-d63d-4af8-91b5-6623c9c7008a" />
